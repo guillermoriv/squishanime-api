@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"net/http"
 
@@ -39,7 +40,7 @@ func getMessage(c *gin.Context) {
 }
 
 func main() {
-	port := "3000"
+	port := os.Getenv("PORT")
 	// Initializing the routes
 	router := gin.Default()
 	router.GET("/content", getContent)
