@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/gocolly/colly/v2"
 )
@@ -32,9 +30,7 @@ func getContent(c *gin.Context) {
 }
 
 func main() {
-	var port int = 3000
-	var	path string = fmt.Sprintf("localhost:%d", port) 
 	router := gin.Default()
 	router.GET("/content", getContent)
-	router.Run(path)
+	router.Run("localhost:8080")
 }
