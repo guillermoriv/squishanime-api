@@ -1,8 +1,6 @@
 package main
 
 import (
-	"os"
-
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -39,7 +37,7 @@ func getMessage(c *gin.Context) {
 }
 
 func main() {
-	port := os.Getenv("PORT")
+	// port := os.Getenv("PORT")
 	// Initializing the gin 
 	router := gin.Default()
 
@@ -47,5 +45,5 @@ func main() {
 	// Initializing the routes
 	router.GET("/content", getContent)
 	router.GET("/echo", getMessage)
-	router.Run(":" + port)
+	router.Run(":3000")
 }
