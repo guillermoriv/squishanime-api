@@ -1,6 +1,10 @@
 package main
 
 import (
+	"fmt"
+
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gocolly/colly/v2"
 )
@@ -29,8 +33,16 @@ func getContent(c *gin.Context) {
 	c.JSON(statusCode, gin.H{"animes": titles})
 }
 
+func getMessage(c *gin.Context) {
+	var message string = c.Query("message")
+	c.String(http.StatusOK, message)
+}
+
 func main() {
+	port := "3000"
+	// Initializing the routes
 	router := gin.Default()
 	router.GET("/content", getContent)
-	router.Run("localhost:8080")
+	router.GET("/echo", getMessage)
+	router.Run(fmt.Sprintf("localhost:%s", port))
 }
