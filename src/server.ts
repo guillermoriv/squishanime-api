@@ -22,9 +22,9 @@ app.use(errorHandler);
   Starting the server on the .env process
   you can define the PORT where the server
   is going to listen in the server.
-  ex: PORT=3000.
+  ex: PORT=5000.
 */
-const server = app.listen(process.env.PORT_LISTEN || 3000);
+const server = app.listen(process.env.PORT_LISTEN || 5000);
 
 function shutdown(): void {
   server.close();
