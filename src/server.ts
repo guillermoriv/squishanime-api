@@ -24,7 +24,8 @@ app.use(errorHandler);
   is going to listen in the server.
   ex: PORT=5000.
 */
-const server = app.listen(process.env.PORT_LISTEN || 5000);
+const PORT: string | number = process.env.PORT || 5000;
+const server = app.listen(PORT, () => console.log(`Listening on: ${PORT}`));
 
 function shutdown(): void {
   server.close();
