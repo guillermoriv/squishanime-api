@@ -4,9 +4,9 @@
   "description": "Squishanime is API to fetch all the data from the culture japonese know as anime.",
   "main": "./src/api/api.ts",
   "scripts": {
-    "start": "node ./dist/server.js",
-    "dev": "tsnd --transpile-only --ignore-watch node_modules --respawn src/server.ts",
+    "start": "tsnd --transpile-only --ignore-watch node_modules --respawn src/server.ts",
     "build": "tsc -p .",
+    "build:start": "node ./dist/server.js",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint --fix src/**/*.ts",
     "format": "prettier --check src/**/*.ts",
