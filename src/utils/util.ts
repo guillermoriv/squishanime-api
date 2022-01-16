@@ -523,12 +523,13 @@ export const tioanimeInfo = async (id: string | undefined, mal_id: number) => {
   }
 };
 
-export const videoServersMonosChinos = async (id: string): Promise<any> => {
+export const videoServersMonosChinos = async (
+  id: string | undefined,
+): Promise<{ url: string; name: string } | unknown> => {
   let $: cheerio.Root;
-  let videoServers: any[] = [];
 
   try {
-    $ = await fetchData(`${urls.BASE_MONOSCHINOS}${id}`, {
+    $ = await fetchData(`${urls.BASE_MONOSCHINOS}ver/${id}`, {
       scrapy: true,
       parse: false,
     });
@@ -536,43 +537,18 @@ export const videoServersMonosChinos = async (id: string): Promise<any> => {
     return err;
   }
 
-  let videoNames: string[] = $('.TPlayerNv li')
-    .map((index: number, element: cheerio.Element) => {
-      return $(element).attr('title');
+  const videoServers: { url: string; name: string }[] = $(
+    'div.heromain div.playother p.play-video',
+  )
+    .map((_index: number, element: cheerio.Element) => {
+      return {
+        url: Buffer.from($(element).attr('data-player')!, 'base64')
+          .toString('ascii')
+          .split('url=')[1],
+        name: $(element).text().toLowerCase(),
+      };
     })
     .get();
-
-  videoServers.push({
-    id: videoNames[0].toLowerCase(),
-    url: decodeURIComponent(
-      $('.TPlayer div iframe').attr('src')?.split('url=')[1]!,
-    ).split('&id')[0],
-    direct: false,
-  });
-
-  const videoContainer: any = $('.TPlayer div').text();
-
-  $(videoContainer).each((index: number, element: cheerio.Element) => {
-    let video: any = $(element).attr('src');
-
-    if (video) {
-      video = video.split('url=')[1];
-      video = decodeURIComponent(video);
-      video = video.split('&id')[0];
-    }
-
-    if (video) {
-      videoNames.forEach((value: string) => {
-        if (video.includes(value.toLowerCase())) {
-          videoServers.push({
-            id: value.toLowerCase(),
-            url: video,
-            direct: false,
-          });
-        }
-      });
-    }
-  });
 
   if (videoServers.length > 0) {
     return videoServers;
