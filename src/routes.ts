@@ -30,7 +30,7 @@ routes.get('/', (req: Request, res: Response) => {
         'All Directory': '/allDirectory/:type',
         Genres: '/getByGenres/:genre?/:order?/:page?',
         'Futures Seasons': '/laterSeasons',
-        LastEpisodes: '/lastEpisodes',
+        lastEpisodes: '/lastEpisodes',
         Movies: '/movies/:type/:page',
         Ovas: '/ova/:type/:page',
         Specials: '/special/:type/:page',
