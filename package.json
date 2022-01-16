@@ -4,7 +4,7 @@
   "description": "Squishanime is API to fetch all the data from the culture japonese know as anime.",
   "main": "./src/api/api.ts",
   "scripts": {
-    "start": "ts-node src/server.ts",
+    "start": "node dist/server.js",
     "dev": "tsnd --transpile-only --ignore-watch node_modules --respawn src/server.ts",
     "build": "tsc -p .",
     "lint": "eslint src/**/*.ts",
@@ -45,9 +45,7 @@
     "express": "^4.17.2",
     "helmet": "^5.0.1",
     "mongodb": "^4.3.0",
-    "mongoose": "^6.1.6",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.5.4"
+    "mongoose": "^6.1.6"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.28",
@@ -62,6 +60,8 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.5.1",
-    "ts-node-dev": "^1.1.8"
+    "ts-node": "^10.4.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.4"
   }
 }
