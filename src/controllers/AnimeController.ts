@@ -53,9 +53,8 @@ interface Top {
 interface Episode {
   id: string;
   title: string;
-  image: string;
-  episode: number;
-  servers: { id: string; url: string; direct: boolean };
+  episode: string;
+  servers: { url: string; name: string }[] | unknown;
 }
 
 interface Movie {
@@ -174,7 +173,6 @@ export default class AnimeController {
 
   async getLastEpisodes(req: Request, res: Response, next: NextFunction) {
     let $: cheerio.Root;
-    let episodes: Episode[] = [];
 
     try {
       $ = await fetchData(`${urls.BASE_MONOSCHINOS}`, {
@@ -187,19 +185,43 @@ export default class AnimeController {
 
     const animes: cheerio.Cheerio = $('div.animes');
 
-    animes.each((i: number, element: cheerio.Element) => {
-      console.log($(element));
-      // const formattedAnime: Episode = {
-      //   id: element.parent
-      // };
-    });
+    const episodeList: { id: string; title: string; episode: string }[] = animes
+      .map((_index: number, element: cheerio.Element) => {
+        const titleAndChapter: string[] = $(element.parent)
+          .attr('href')
+          ?.split('/')[4]
+          .split('-episodio-')!;
 
-    res.status(200).json({
-      message: 'done',
-    });
-    // res
-    //   .status(500)
-    //   .json({ message: 'We lost it... could not find anything :(' });
+        const formattedAnime: { id: string; title: string; episode: string } = {
+          id: titleAndChapter[0],
+          title: $(element).find('p.animetitles').text(),
+          episode: titleAndChapter[1],
+        };
+
+        return formattedAnime;
+      })
+      .get();
+
+    let listLastEpisodes: Episode[] = [];
+
+    for (let i = 0; i < episodeList.length; i++) {
+      listLastEpisodes.push({
+        ...episodeList[i],
+        servers: await videoServersMonosChinos(
+          `${episodeList[i].id}-episodio-${episodeList[i].episode}`,
+        ),
+      });
+    }
+
+    if (listLastEpisodes.length > 0) {
+      return res.status(200).json({
+        lastEpisodes: listLastEpisodes,
+      });
+    } else {
+      return res
+        .status(500)
+        .json({ message: 'We lost it... could not find anything :(' });
+    }
   }
 
   // async getContentTv(req: Request, res: Response, next: NextFunction) {
