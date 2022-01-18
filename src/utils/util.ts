@@ -397,25 +397,16 @@ export const monoschinosInfo = async (
       }
     }
 
-    $!('.SerieCaps a').each((index: number, element: cheerio.Element) => {
-      let episode: number;
-
-      $(element)
-        .attr('href')
-        ?.split('-')
-        .forEach((item: any) => {
-          if (!isNaN(item)) {
-            episode = parseInt(item);
-          }
+    $('div.allanimes div.row div.col-item').each(
+      (index: number, element: cheerio.Element) => {
+        episodeList.push({
+          episode: index + 1,
+          id: `${$(element).find('a').attr('href')?.split('/')[3]}/${
+            $(element).find('a').attr('href')?.split('/')[4]
+          }`,
         });
-
-      episodeList.push({
-        episode: episode!,
-        id: `${$(element).attr('href')?.split('/')[3]}/${
-          $(element).attr('href')?.split('/')[4]
-        }`,
-      });
-    });
+      },
+    );
 
     if (episodeList.length > 0) {
       return episodeList;
@@ -583,9 +574,8 @@ export const videoServersTioAnime = async (id: string) => {
 
   for (const server of servers) {
     videoServers.push({
-      id: server[0].toLowerCase(),
       url: server[1],
-      direct: false,
+      name: server[0].toLowerCase(),
     });
   }
 
