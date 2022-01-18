@@ -17,7 +17,8 @@ export const fetchData = async (
     }
 
     if (options.parse) {
-      return await axios.get(url);
+      const response = await axios.get(url);
+      return response.data;
     }
   } else {
     return await axios.get(url);

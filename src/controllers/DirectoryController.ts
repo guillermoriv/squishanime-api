@@ -37,68 +37,27 @@ interface Archive {
 export default class DirectoryController {
   async getAllDirectory(req: Request, res: Response, next: NextFunction) {
     const { genres } = req.params;
+    let animes: Anime[];
 
     try {
       if (genres === 'sfw') {
-        await AnimeModel.find(
-          {
-            genres: { $nin: ['ecchi', 'Ecchi'] },
-          },
-          (err: any, docs: Anime[]) => {
-            let directory: any[] = [];
-
-            for (const item of docs) {
-              directory.push({
-                id: item.id,
-                title: item.title,
-                mal_id: item.mal_id,
-                poster: item.poster,
-                type: item.type,
-                genres: item.genres,
-                score: item.score,
-                source: item.source,
-                description: item.description,
-              });
-            }
-
-            if (directory.length > 0) {
-              res.status(200).json({ directory });
-            } else {
-              res
-                .status(500)
-                .json({ message: 'We lost it... could not find anything :(' });
-            }
-          },
-        );
-      } else {
-        await AnimeModel.find((err: any, docs: Anime[]) => {
-          let directory: any[] = [];
-
-          for (const item of docs) {
-            directory.push({
-              id: item.id,
-              title: item.title,
-              mal_id: item.mal_id,
-              poster: item.poster,
-              type: item.type,
-              genres: item.genres,
-              score: item.score,
-              source: item.source,
-              description: item.description,
-            });
-          }
-
-          if (directory.length > 0) {
-            res.status(200).json({ directory });
-          } else {
-            res
-              .status(500)
-              .json({ message: 'We lost it... could not find anything :(' });
-          }
+        animes = await AnimeModel.find({
+          genres: { $nin: ['ecchi', 'Ecchi'] },
         });
+      } else {
+        animes = await AnimeModel.find({});
       }
     } catch (err) {
+      console.log(err);
       return next(err);
+    }
+
+    if (animes.length > 0) {
+      res.status(200).json({ animes });
+    } else {
+      res
+        .status(500)
+        .json({ message: 'We lost it... could not find anything :(' });
     }
   }
 
