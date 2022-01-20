@@ -188,7 +188,7 @@ export default class AnimeController {
       if (searchAnime !== null) {
         listLastEpisodes.push({
           ...episodeList[i],
-          image: searchAnime.poster,
+          image: urls.BASE_STORAGE + searchAnime.poster,
           servers: await videoServersMonosChinos(
             `${episodeList[i].id}-episodio-${episodeList[i].episode}`,
           ),
