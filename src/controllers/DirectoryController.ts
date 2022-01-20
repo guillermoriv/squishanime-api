@@ -164,7 +164,7 @@ export default class DirectoryController {
 
       resultAnime = {
         title: resultQuery?.title,
-        poster: resultQuery?.poster,
+        poster: urls.BASE_STORAGE + resultQuery?.poster,
         synopsis: resultQuery?.description,
         status: !extraInfo.aired.to ? 'En emisión' : 'Finalizado',
         type: resultQuery?.type,
@@ -205,7 +205,7 @@ export default class DirectoryController {
         id: item.id,
         title: item.title,
         type: item.type,
-        image: item.poster,
+        image: urls.BASE_STORAGE + item.poster,
       };
     });
 
