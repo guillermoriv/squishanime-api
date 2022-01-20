@@ -216,14 +216,12 @@ export default class AnimeController {
   }
 
   async getEpisodes(req: Request, res: Response, next: NextFunction) {
-    const { title } = req.params;
+    const { id } = req.params;
     let searchAnime: ModelA | null;
     let episodes: any;
 
     try {
-      searchAnime = await AnimeModel.findOne({
-        $or: [{ title: { $eq: title } }, { title: { $eq: `${title} (TV)` } }],
-      });
+      searchAnime = await AnimeModel.findOne({ id: { $eq: id } });
     } catch (err) {
       return next(err);
     }

@@ -44,7 +44,7 @@ routes.get('/', (req: Request, res: Response) => {
 routes.get('/schedule/:day', animeController.schedule);
 routes.get('/top/:type/:subtype?/:page', animeController.top);
 routes.get('/lastEpisodes', animeController.getLastEpisodes);
-routes.get('/getEpisodes/:title', animeController.getEpisodes);
+routes.get('/getEpisodes/:id', animeController.getEpisodes);
 routes.get('/getAnimeServers/:id([^/]+/[^/]+)', animeController.getServers);
 routes.get('/randomAnime', animeController.getRandomAnime);
 
