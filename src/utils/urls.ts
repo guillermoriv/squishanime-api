@@ -3,7 +3,7 @@ export default {
   BASE_MONOSCHINOS: 'https://monoschinos2.com/',
   BASE_TIOANIME: 'https://tioanime.com/',
   BASE_JKANIME: 'https://jkanime.net/',
-  BASE_JIKAN: 'https://api.jikan.moe/v3/',
+  BASE_JIKAN: 'https://api.jikan.moe/v4/',
   BASE_CRUNCHYROLL: 'https://www.crunchyroll.com/newsrss?lang=esES',
   JKANIME_SEARCH: 'https://jkanime.net/buscar/',
   ANIMEFLV_SEARCH: 'https://animeflv.net/browse?',

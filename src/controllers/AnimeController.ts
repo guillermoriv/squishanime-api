@@ -18,6 +18,7 @@ import {
   getRelatedAnimesMAL,
 } from '../utils/util';
 import urls from '../utils/urls';
+import axios from 'axios';
 
 /*
   AnimeController - a class to manage the schedule,
@@ -54,6 +55,11 @@ interface Episode {
   id: string;
   title: string;
   episode: string;
+  image: {
+    image_url: string | null;
+    image_small: string | null;
+    image_large: string | null;
+  };
   servers: { url: string; name: string }[] | unknown;
 }
 
@@ -176,12 +182,47 @@ export default class AnimeController {
     let listLastEpisodes: Episode[] = [];
 
     for (let i = 0; i < episodeList.length; i++) {
-      listLastEpisodes.push({
-        ...episodeList[i],
-        servers: await videoServersMonosChinos(
-          `${episodeList[i].id}-episodio-${episodeList[i].episode}`,
-        ),
+      let images: any;
+      const searchAnime: ModelA | null = await AnimeModel.findOne({
+        $or: [
+          { title: { $eq: episodeList[i].title } },
+          { title: { $eq: `${episodeList[i].title} (TV)` } },
+        ],
       });
+
+      if (searchAnime !== null) {
+        const { data } = await axios.get(
+          `${urls.BASE_JIKAN}anime/${searchAnime?.mal_id}/pictures`,
+        );
+
+        images = data.data[0].jpg;
+      }
+
+      if (searchAnime !== null) {
+        listLastEpisodes.push({
+          ...episodeList[i],
+          image: {
+            image_url: images.image_url,
+            image_small: images.small_image_url,
+            image_large: images.large_image_url,
+          },
+          servers: await videoServersMonosChinos(
+            `${episodeList[i].id}-episodio-${episodeList[i].episode}`,
+          ),
+        });
+      } else {
+        listLastEpisodes.push({
+          ...episodeList[i],
+          image: {
+            image_url: null,
+            image_small: null,
+            image_large: null,
+          },
+          servers: await videoServersMonosChinos(
+            `${episodeList[i].id}-episodio-${episodeList[i].episode}`,
+          ),
+        });
+      }
     }
 
     if (listLastEpisodes.length > 0) {
