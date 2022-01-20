@@ -151,14 +151,12 @@ export default class DirectoryController {
   }
 
   async getMoreInfo(req: Request, res: Response, next: NextFunction) {
-    const { title } = req.params;
+    const { id } = req.params;
     let resultQuery: Anime | null;
     let resultAnime: any;
 
     try {
-      resultQuery = await AnimeModel.findOne({
-        $or: [{ title: { $eq: title } }, { title: { $eq: `${title} (TV)` } }],
-      });
+      resultQuery = await AnimeModel.findOne({ id: { $eq: id } });
 
       const extraInfo: any = await animeExtraInfo(resultQuery!.mal_id);
 
@@ -168,11 +166,9 @@ export default class DirectoryController {
         synopsis: resultQuery?.description,
         status: !extraInfo.aired.to ? 'En emisión' : 'Finalizado',
         type: resultQuery?.type,
-        rating: resultQuery?.score,
+        rating: extraInfo.score,
         genres: resultQuery?.genres,
-        moreInfo: [extraInfo],
-        promo: await getAnimeVideoPromo(resultQuery!.mal_id),
-        characters: await getAnimeCharacters(resultQuery!.mal_id),
+        moreInfo: extraInfo,
         related: await getRelatedAnimesMAL(resultQuery!.mal_id),
       };
     } catch (err) {

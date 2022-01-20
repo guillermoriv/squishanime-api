@@ -2,7 +2,6 @@ import urls from './urls';
 import { fetchData } from './request';
 import AnimeModel, { Anime } from '../database/models/anime.model';
 import crypto from 'crypto';
-import util from 'util';
 
 /*
   Utils fuctions - functions to get information
@@ -31,7 +30,6 @@ interface RelatedAnime {
 
 export const animeExtraInfo = async (mal_id: number) => {
   let data: any;
-  let broadcast: any;
 
   const airDay: any = {
     mondays: 'Lunes',
@@ -52,20 +50,18 @@ export const animeExtraInfo = async (mal_id: number) => {
   };
 
   try {
-    data = await fetchData(`${urls.BASE_JIKAN}anime/${mal_id}`, {
-      parse: true,
-      scrapy: false,
-    });
-
-    if (data.broadcast) {
-      broadcast = data.broadcast.split('at')[0].trim().toLowerCase() || null;
-    }
+    data = (
+      await fetchData(`${urls.BASE_JIKAN}anime/${mal_id}`, {
+        parse: true,
+        scrapy: false,
+      })
+    ).data;
   } catch (err) {
     return err;
   }
 
-  if (airDay.hasOwnProperty(broadcast)) {
-    data.broadcast = airDay[broadcast];
+  if (data.broadcast.day !== null) {
+    data.broadcast = airDay[data.broadcast.day];
   } else {
     data.broadcast = null;
   }
@@ -74,6 +70,7 @@ export const animeExtraInfo = async (mal_id: number) => {
     titleJapanese: data.title_japanese,
     source: data.source,
     totalEpisodes: data.episodes,
+    score: data.score,
     aired: {
       from: data.aired.from,
       to: data.aired.to,
