@@ -56,7 +56,6 @@ interface Episode {
   title: string;
   episode: string;
   image: string | null;
-  servers: { url: string; name: string }[] | unknown;
 }
 
 interface Movie {
@@ -189,17 +188,11 @@ export default class AnimeController {
         listLastEpisodes.push({
           ...episodeList[i],
           image: urls.BASE_STORAGE + searchAnime.poster,
-          servers: await videoServersMonosChinos(
-            `${episodeList[i].id}-episodio-${episodeList[i].episode}`,
-          ),
         });
       } else {
         listLastEpisodes.push({
           ...episodeList[i],
           image: null,
-          servers: await videoServersMonosChinos(
-            `${episodeList[i].id}-episodio-${episodeList[i].episode}`,
-          ),
         });
       }
     }
