@@ -214,7 +214,9 @@ export default class AnimeController {
     let episodes: any;
 
     try {
-      searchAnime = await AnimeModel.findOne({ id: { $eq: id } });
+      searchAnime = await AnimeModel.findOne({
+        $or: [{ id: { $eq: id } }, { id: { $eq: `${id}-sub-espanol` } }],
+      });
     } catch (err) {
       return next(err);
     }
