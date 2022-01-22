@@ -1,2 +1,2 @@
 # squishanime-api
-API made in GoLang for anime and mangas
+API for substracting anime information and episodes from websites like (monoschinos and tioanime)
