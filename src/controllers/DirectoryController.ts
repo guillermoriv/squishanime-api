@@ -156,7 +156,9 @@ export default class DirectoryController {
     let resultAnime: any;
 
     try {
-      resultQuery = await AnimeModel.findOne({ id: { $eq: id } });
+      resultQuery = await AnimeModel.findOne({
+        $or: [{ id: { $eq: id } }, { id: { $eq: `${id}-sub-espanol` } }],
+      });
 
       const extraInfo: any = await animeExtraInfo(resultQuery!.mal_id);
 
