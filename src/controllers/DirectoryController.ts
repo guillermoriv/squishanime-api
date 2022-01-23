@@ -36,24 +36,37 @@ interface Archive {
 
 export default class DirectoryController {
   async getAllDirectory(req: Request, res: Response, next: NextFunction) {
-    const { genres } = req.params;
+    const { page } = req.query;
     let animes: Anime[];
 
     try {
-      if (genres === 'sfw') {
-        animes = await AnimeModel.find({
-          genres: { $nin: ['ecchi', 'Ecchi'] },
-        });
-      } else {
-        animes = await AnimeModel.find({});
-      }
+      animes = await AnimeModel.find({})
+        .limit(25)
+        .skip(25 * Number(page));
     } catch (err) {
-      console.log(err);
       return next(err);
     }
 
     if (animes.length > 0) {
       res.status(200).json({ animes });
+    } else {
+      res
+        .status(500)
+        .json({ message: 'We lost it... could not find anything :(' });
+    }
+  }
+
+  async getDirectoryCount(req: Request, res: Response, next: NextFunction) {
+    let result: number = 0;
+
+    try {
+      result = await AnimeModel.count();
+    } catch (err) {
+      return next(err);
+    }
+
+    if (result !== 0) {
+      res.status(200).json({ directoryCount: result });
     } else {
       res
         .status(500)
