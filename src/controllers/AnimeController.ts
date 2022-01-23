@@ -308,7 +308,6 @@ export default class AnimeController {
       poster: animeQuery[0].poster || null,
       synopsis: animeQuery[0].description || null,
       type: animeQuery[0].type || null,
-      rating: animeQuery[0].score || null,
       genres: animeQuery[0].genres || null,
       moreInfo: [await animeExtraInfo(animeQuery[0].mal_id)],
       promo: await getAnimeVideoPromo(animeQuery[0].mal_id),

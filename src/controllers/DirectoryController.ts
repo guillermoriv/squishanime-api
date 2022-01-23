@@ -36,19 +36,61 @@ interface Archive {
 
 export default class DirectoryController {
   async getAllDirectory(req: Request, res: Response, next: NextFunction) {
-    const { page } = req.query;
-    let animes: Anime[];
+    const { page: actuallyPage } = req.query;
+    const page = actuallyPage ? actuallyPage : '1';
+    let resultAnimes: Anime[];
+    let animes: any[] = [];
 
     try {
-      animes = await AnimeModel.find({})
-        .limit(25)
-        .skip(25 * Number(page));
+      resultAnimes = await AnimeModel.find({})
+        .limit(24)
+        .skip(24 * Number(page));
     } catch (err) {
       return next(err);
     }
 
+    for (let i = 0; i < resultAnimes.length; i++) {
+      animes.push({
+        genres: resultAnimes[i].genres,
+        id: resultAnimes[i].id,
+        title: resultAnimes[i].title,
+        mal_id: resultAnimes[i].mal_id,
+        poster: resultAnimes[i].poster,
+        type: resultAnimes[i].type,
+        source: resultAnimes[i].source,
+        description: resultAnimes[i].description,
+      });
+    }
+
     if (animes.length > 0) {
       res.status(200).json({ animes });
+    } else {
+      res
+        .status(500)
+        .json({ message: 'We lost it... could not find anything :(' });
+    }
+  }
+
+  async getScore(req: Request, res: Response, next: NextFunction) {
+    const { malid } = req.params;
+    let score: string;
+
+    try {
+      const $: cheerio.Root = await fetchData(
+        `${urls.BASE_MAL}anime/${malid}`,
+        {
+          scrapy: true,
+          parse: false,
+        },
+      );
+
+      score = $('div.score-label').text();
+    } catch (err) {
+      return next(err);
+    }
+
+    if (score) {
+      res.status(200).json({ score });
     } else {
       res
         .status(500)
