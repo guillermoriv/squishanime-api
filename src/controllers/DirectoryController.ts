@@ -71,6 +71,33 @@ export default class DirectoryController {
     }
   }
 
+  async getScore(req: Request, res: Response, next: NextFunction) {
+    const { malid } = req.params;
+    let score: string;
+
+    try {
+      const $: cheerio.Root = await fetchData(
+        `${urls.BASE_MAL}anime/${malid}`,
+        {
+          scrapy: true,
+          parse: false,
+        },
+      );
+
+      score = $('div.score-label').text();
+    } catch (err) {
+      return next(err);
+    }
+
+    if (score) {
+      res.status(200).json({ score });
+    } else {
+      res
+        .status(500)
+        .json({ message: 'We lost it... could not find anything :(' });
+    }
+  }
+
   async getDirectoryCount(req: Request, res: Response, next: NextFunction) {
     let result: number = 0;
 

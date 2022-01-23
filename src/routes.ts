@@ -38,8 +38,6 @@ routes.get('/', (req: Request, res: Response) => {
   });
 });
 
-/* Routes of the app below */
-
 /* Anime Controller */
 routes.get('/schedule/:day', animeController.schedule);
 routes.get('/top/:type/:subtype?/:page', animeController.top);
@@ -49,7 +47,8 @@ routes.get('/getAnimeServers/:id([^/]+/[^/]+)', animeController.getServers);
 routes.get('/randomAnime', animeController.getRandomAnime);
 
 /* Directory Controller */
-routes.get('/allDirectory/:genres?', directoryController.getAllDirectory);
+routes.get('/allDirectory/:page?', directoryController.getAllDirectory);
+routes.get('/getScore/:malid', directoryController.getScore);
 routes.get('/season/:year/:type', directoryController.getSeason);
 routes.get('/allSeasons', directoryController.allSeasons);
 routes.get('/laterSeasons', directoryController.laterSeasons);
