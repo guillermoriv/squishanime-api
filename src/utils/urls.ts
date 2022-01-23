@@ -10,4 +10,5 @@ export default {
   SEARCH_DIRECTORY: 'https://animeflv.net/browse?order=title&page=',
   BASE_EPISODE_IMG_URL: 'https://cdn.animeflv.net/screenshots/',
   BASE_STORAGE: 'https://storage.googleapis.com/squishanime_api/images/',
+  BASE_MAL: 'https://myanimelist.net/',
 };
