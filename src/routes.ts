@@ -54,6 +54,7 @@ routes.get('/season/:year/:type', directoryController.getSeason);
 routes.get('/allSeasons', directoryController.allSeasons);
 routes.get('/laterSeasons', directoryController.laterSeasons);
 routes.get('/moreInfo/:id', directoryController.getMoreInfo);
+routes.get('/directoryCount', directoryController.getDirectoryCount);
 routes.get('/search/:title', directoryController.search);
 routes.get(
   '/getByGenres/:genre?/:order?/:page?',
