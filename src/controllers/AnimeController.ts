@@ -26,12 +26,6 @@ import axios from 'axios';
   with async to return promises.
 */
 
-interface Schedule {
-  title: string;
-  mal_id: number;
-  image_url: any;
-}
-
 interface Anime {
   index: string;
   animeId: string;
@@ -78,7 +72,7 @@ export default class AnimeController {
     let data: any;
 
     try {
-      data = await fetchData(`${urls.BASE_JIKAN}schedule/${day}`, {
+      data = await fetchData(`${urls.BASE_JIKAN}schedules/${day}`, {
         parse: true,
         scrapy: false,
       });
@@ -86,11 +80,7 @@ export default class AnimeController {
       return next(err);
     }
 
-    const animeList: Schedule[] = data[day].map((item: Schedule) => ({
-      title: item.title,
-      malid: item.mal_id,
-      image: item.image_url,
-    }));
+    const animeList: any[] = data.data.map((item: any) => item);
 
     if (animeList.length > 0) {
       res.status(200).json({
