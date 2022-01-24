@@ -82,9 +82,26 @@ export default class AnimeController {
 
     const animeList: any[] = data.data.map((item: any) => item);
 
-    if (animeList.length > 0) {
+    let resultAnimes: any[] = [];
+
+    for (let i = 0; i < animeList.length; i++) {
+      const searchAnime: ModelA | null = await AnimeModel.findOne({
+        mal_id: { $eq: animeList[i].mal_id },
+      });
+
+      if (searchAnime !== null) {
+        const formattedObject = {
+          ...animeList[i],
+          id: searchAnime!.id,
+        };
+
+        resultAnimes.push(formattedObject);
+      }
+    }
+
+    if (resultAnimes.length > 0) {
       res.status(200).json({
-        day: animeList,
+        day: resultAnimes,
       });
     } else {
       res
