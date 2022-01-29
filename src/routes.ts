@@ -57,6 +57,7 @@ routes.get('/laterSeasons', directoryController.laterSeasons);
 routes.get('/moreInfo/:id', directoryController.getMoreInfo);
 routes.get('/directoryCount', directoryController.getDirectoryCount);
 routes.get('/search/:title', directoryController.search);
+routes.get('/genres', directoryController.getGenres);
 routes.get(
   '/getByGenres/:genre?/:order?/:page?',
   directoryController.getAnimeGenres,
