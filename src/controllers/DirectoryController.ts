@@ -10,6 +10,7 @@ import {
   getRelatedAnimesMAL,
 } from '../utils/util';
 import urls from '../utils/urls';
+import GenreModel, { Genre } from '../database/models/genre.model';
 
 /*
   DirectoryController - async functions controlling the directory
@@ -92,6 +93,24 @@ export default class DirectoryController {
 
     if (score) {
       res.status(200).json({ score });
+    } else {
+      res
+        .status(500)
+        .json({ message: 'We lost it... could not find anything :(' });
+    }
+  }
+
+  async getGenres(req: Request, res: Response, next: NextFunction) {
+    let result: Genre[];
+
+    try {
+      result = await GenreModel.find();
+    } catch (err) {
+      return next(err);
+    }
+
+    if (result.length > 0) {
+      res.status(200).json({ genres: result });
     } else {
       res
         .status(500)
