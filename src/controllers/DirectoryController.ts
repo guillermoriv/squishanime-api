@@ -43,6 +43,7 @@ export default class DirectoryController {
 
     try {
       resultAnimes = await AnimeModel.find({})
+        .sort({ _id: -1 })
         .limit(24)
         .skip(24 * Number(page));
     } catch (err) {
