@@ -50,6 +50,7 @@ interface Episode {
   title: string;
   episode: string;
   image: string | null;
+  genres: string[];
 }
 
 interface Movie {
@@ -195,11 +196,13 @@ export default class AnimeController {
         listLastEpisodes.push({
           ...episodeList[i],
           image: urls.BASE_STORAGE + searchAnime.poster,
+          genres: searchAnime.genres,
         });
       } else {
         listLastEpisodes.push({
           ...episodeList[i],
           image: null,
+          genres: [],
         });
       }
     }
